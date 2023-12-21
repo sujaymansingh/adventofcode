@@ -113,6 +113,10 @@ impl StringScanner {
         result
     }
 
+    pub fn read_whitespace(&mut self) -> String {
+        self.read_while(char::is_whitespace)
+    }
+
     pub fn expect_uint<T>(&mut self) -> Result<T, StringScannerError>
     where
         T: FromStr<Err = ParseIntError>,

@@ -3,6 +3,7 @@ use crate::core::{Day, Part, Solver};
 mod d01;
 mod d02;
 mod d03;
+mod d04;
 
 pub fn get_solver(day: &Day, part: &Part) -> Box<dyn Solver> {
     match (day.raw_value(), part.raw_value()) {
@@ -12,6 +13,8 @@ pub fn get_solver(day: &Day, part: &Part) -> Box<dyn Solver> {
         (2, 2) => d02::part_2(),
         (3, 1) => d03::part_1(),
         (3, 2) => d03::part_2(),
+        (4, 1) => d04::part_1(),
+        (4, 2) => d04::part_2(),
         _ => todo!(),
     }
 }
