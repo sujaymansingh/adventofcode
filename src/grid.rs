@@ -27,6 +27,18 @@ impl Direction {
     }
 }
 
+#[derive(Debug, Copy, Clone, Eq, PartialEq)]
+pub struct Point {
+    pub x: usize,
+    pub y: usize,
+}
+
+impl Point {
+    pub fn new(x: usize, y: usize) -> Self {
+        Self { x, y }
+    }
+}
+
 #[derive(Debug, Clone)]
 pub struct Grid(usize, usize);
 
@@ -43,21 +55,22 @@ impl Grid {
         self.1
     }
 
-    pub fn to_point(&self, idx: usize) -> (usize, usize) {
+    pub fn to_point(&self, idx: usize) -> Point {
         let width = self.width();
         let x = idx % width;
         let y = idx / width;
-        (x, y)
+        Point { x, y }
     }
 
-    pub fn to_index(&self, x: usize, y: usize) -> usize {
+    pub fn to_index(&self, point: &Point) -> usize {
+        let Point { x, y } = point;
         let width = self.0;
         y * width + x
     }
 
     pub fn neighbour(&self, idx: usize, direction: Direction) -> Option<usize> {
         let (width, height) = (self.0, self.1);
-        let (x, y) = self.to_point(idx);
+        let Point { x, y } = self.to_point(idx);
         let max_x = width - 1;
         let max_y = height - 1;
         use Direction::*;
@@ -76,7 +89,7 @@ impl Grid {
             }
         };
 
-        Some(self.to_index(new_x, new_y))
+        Some(self.to_index(&Point::new(new_x, new_y)))
     }
 
     pub fn neighbours(&self, idx: usize) -> Vec<usize> {
@@ -129,7 +142,7 @@ impl<'a> Iterator for GridPositionIter<'a> {
         }
 
         let idx = self.current;
-        let (x, y) = self.grid.to_point(idx);
+        let Point { x, y } = self.grid.to_point(idx);
         self.current += 1;
 
         Some(GridPosition::new(idx, x, y))
