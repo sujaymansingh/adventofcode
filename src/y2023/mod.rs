@@ -6,6 +6,7 @@ mod d03;
 mod d04;
 mod d05;
 mod d06;
+mod d07;
 
 pub fn get_solver(day: &Day, part: &Part) -> Box<dyn Solver> {
     match (day.raw_value(), part.raw_value()) {
@@ -21,6 +22,8 @@ pub fn get_solver(day: &Day, part: &Part) -> Box<dyn Solver> {
         (5, 2) => d05::part_2(),
         (6, 1) => d06::part_1(),
         (6, 2) => d06::part_2(),
+        (7, 1) => d07::part_1(),
+        (7, 2) => d07::part_2(),
         _ => todo!(),
     }
 }
