@@ -4,12 +4,16 @@ use std::{num::ParseIntError, ops::RangeInclusive, str::FromStr};
 
 use thiserror::Error;
 
+use crate::string_scanner::StringScannerError;
+
 #[derive(Debug, Error)]
 pub enum CoreError {
     #[error("IO Error: {0}")]
     Io(#[from] io::Error),
     #[error("Bad number: {0}")]
     BadNumber(#[from] ParseIntError),
+    #[error("Couldn't scan string: {0:?}")]
+    StringScanner(#[from] StringScannerError),
 }
 
 pub type Result<T> = result::Result<T, CoreError>;
