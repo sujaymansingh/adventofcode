@@ -24,7 +24,7 @@ impl FromStr for Year {
 
 impl ToString for Year {
     fn to_string(&self) -> String {
-        self.0.to_string()
+        format!("{:04}", self.0)
     }
 }
 
@@ -42,7 +42,7 @@ impl FromStr for Day {
 
 impl ToString for Day {
     fn to_string(&self) -> String {
-        self.0.to_string()
+        format!("{:02}", self.0)
     }
 }
 
@@ -60,7 +60,7 @@ impl FromStr for Part {
 
 impl ToString for Part {
     fn to_string(&self) -> String {
-        self.0.to_string()
+        format!("{:02}", self.0)
     }
 }
 
