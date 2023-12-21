@@ -1,6 +1,18 @@
+use std::io;
 use std::{num::ParseIntError, ops::RangeInclusive, str::FromStr};
 
 use thiserror::Error;
+
+#[derive(Debug, Error)]
+pub enum CoreError {
+    #[error("IO Error")]
+    Io(#[from] io::Error),
+}
+
+pub trait Solver {
+    fn handle_line(&mut self, line: &str) -> Result<(), CoreError>;
+    fn extract_solution(&self) -> Result<String, CoreError>;
+}
 
 #[derive(Debug, Error)]
 pub enum ArgumentError {

@@ -6,7 +6,7 @@ use std::fs::File;
 use std::io::{self, BufRead};
 use std::path::{Path, PathBuf};
 
-use crate::core::{Day, Part, Year};
+use crate::core::{CoreError, Day, Part, Solver, Year};
 
 #[derive(Debug, StructOpt)]
 #[structopt(name = "aoc", about = "Advent of Code solutions")]
@@ -21,15 +21,20 @@ struct Opt {
     part: Part,
 }
 
-fn main() -> Result<(), io::Error> {
+fn main() -> Result<(), CoreError> {
     let opt = Opt::from_args();
 
     let filename = get_filename(&opt.year, &opt.day);
     let lines = read_lines(&filename)?;
 
+    let mut solver = get_solver(&opt.year, &opt.day, &opt.part);
+
     for line in lines {
-        println!("{}, ", line?);
+        solver.handle_line(&line?)?;
     }
+
+    let solution = solver.extract_solution()?;
+    println!("{}", solution);
 
     Ok(())
 }
@@ -45,4 +50,8 @@ where
 {
     let file = File::open(filename)?;
     Ok(io::BufReader::new(file).lines())
+}
+
+fn get_solver(year: &Year, day: &Day, part: &Part) -> Box<dyn Solver> {
+    todo!()
 }
