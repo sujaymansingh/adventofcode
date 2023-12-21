@@ -1,4 +1,6 @@
 mod core;
+mod string_scanner;
+mod y2023;
 
 use structopt::StructOpt;
 
@@ -53,5 +55,8 @@ where
 }
 
 fn get_solver(year: &Year, day: &Day, part: &Part) -> Box<dyn Solver> {
-    todo!()
+    match year.raw_value() {
+        2023 => y2023::get_solver(day, part),
+        _ => todo!(),
+    }
 }

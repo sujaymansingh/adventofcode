@@ -42,6 +42,12 @@ impl ToString for Year {
     }
 }
 
+impl Year {
+    pub fn raw_value(&self) -> u16 {
+        self.0
+    }
+}
+
 #[derive(Debug)]
 pub struct Day(u16);
 
@@ -60,6 +66,12 @@ impl ToString for Day {
     }
 }
 
+impl Day {
+    pub fn raw_value(&self) -> u16 {
+        self.0
+    }
+}
+
 #[derive(Debug)]
 pub struct Part(u16);
 
@@ -75,6 +87,12 @@ impl FromStr for Part {
 impl ToString for Part {
     fn to_string(&self) -> String {
         format!("{:02}", self.0)
+    }
+}
+
+impl Part {
+    pub fn raw_value(&self) -> u16 {
+        self.0
     }
 }
 
