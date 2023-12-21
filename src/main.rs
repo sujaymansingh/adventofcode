@@ -1,4 +1,5 @@
 mod core;
+mod grid;
 mod maths;
 mod string_scanner;
 mod y2023;
