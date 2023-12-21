@@ -1,4 +1,4 @@
-use crate::core::{CoreError, Solver};
+use crate::core::{Result, Solver};
 use crate::string_scanner::StringScanner;
 
 const TOKENS_AND_VALUES: [(&str, u32); 20] = [
@@ -38,12 +38,12 @@ pub struct ExtractAndSum {
 }
 
 impl Solver for ExtractAndSum {
-    fn handle_line(&mut self, line: &str) -> Result<(), CoreError> {
+    fn handle_line(&mut self, line: &str) -> Result<()> {
         self.total += extract_number(line, false)?;
         Ok(())
     }
 
-    fn extract_solution(&self) -> Result<String, CoreError> {
+    fn extract_solution(&self) -> Result<String> {
         Ok(self.total.to_string())
     }
 }
@@ -54,12 +54,12 @@ pub struct ExtractAndSumWithWords {
 }
 
 impl Solver for ExtractAndSumWithWords {
-    fn handle_line(&mut self, line: &str) -> Result<(), CoreError> {
+    fn handle_line(&mut self, line: &str) -> Result<()> {
         self.total += extract_number(line, true)?;
         Ok(())
     }
 
-    fn extract_solution(&self) -> Result<String, CoreError> {
+    fn extract_solution(&self) -> Result<String> {
         Ok(self.total.to_string())
     }
 }
@@ -78,7 +78,7 @@ fn extract_digits_with_words(line: &str) -> Box<dyn Iterator<Item = u32> + '_> {
     })
 }
 
-fn extract_number(line: &str, include_words: bool) -> Result<u32, CoreError> {
+fn extract_number(line: &str, include_words: bool) -> Result<u32> {
     let mut first_digit: Option<u32> = None;
     let mut last_digit = 0;
 

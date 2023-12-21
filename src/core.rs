@@ -1,4 +1,5 @@
 use std::io;
+use std::result;
 use std::{num::ParseIntError, ops::RangeInclusive, str::FromStr};
 
 use thiserror::Error;
@@ -11,9 +12,11 @@ pub enum CoreError {
     BadNumber(#[from] ParseIntError),
 }
 
+pub type Result<T> = result::Result<T, CoreError>;
+
 pub trait Solver {
-    fn handle_line(&mut self, line: &str) -> Result<(), CoreError>;
-    fn extract_solution(&self) -> Result<String, CoreError>;
+    fn handle_line(&mut self, line: &str) -> Result<()>;
+    fn extract_solution(&self) -> Result<String>;
 }
 
 #[derive(Debug, Error)]
@@ -30,7 +33,7 @@ pub struct Year(u16);
 impl FromStr for Year {
     type Err = ArgumentError;
 
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    fn from_str(s: &str) -> result::Result<Self, Self::Err> {
         let year = to_num_within_range(s, 2023..=2023)?;
         Ok(Self(year))
     }
@@ -54,7 +57,7 @@ pub struct Day(u16);
 impl FromStr for Day {
     type Err = ArgumentError;
 
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    fn from_str(s: &str) -> result::Result<Self, Self::Err> {
         let day = to_num_within_range(s, 1..=25)?;
         Ok(Self(day))
     }
@@ -78,7 +81,7 @@ pub struct Part(u16);
 impl FromStr for Part {
     type Err = ArgumentError;
 
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    fn from_str(s: &str) -> result::Result<Self, Self::Err> {
         let part = to_num_within_range(s, 1..=2)?;
         Ok(Self(part))
     }
@@ -96,7 +99,7 @@ impl Part {
     }
 }
 
-fn to_num_within_range(s: &str, range: RangeInclusive<u16>) -> Result<u16, ArgumentError> {
+fn to_num_within_range(s: &str, range: RangeInclusive<u16>) -> result::Result<u16, ArgumentError> {
     let raw_value = s.parse::<u16>()?;
     let value = assert_within_range_inclusive(raw_value, &range)?;
     Ok(value)
@@ -105,7 +108,7 @@ fn to_num_within_range(s: &str, range: RangeInclusive<u16>) -> Result<u16, Argum
 fn assert_within_range_inclusive(
     value: u16,
     range: &RangeInclusive<u16>,
-) -> Result<u16, ArgumentError> {
+) -> result::Result<u16, ArgumentError> {
     if range.contains(&value) {
         Ok(value)
     } else {
@@ -133,12 +136,13 @@ mod test {
     #[test]
     fn ok_if_value_in_range() {
         let range: RangeInclusive<u16> = 5..=20;
-        let result: Result<u16, ArgumentError> = assert_within_range_inclusive(10, &range);
+        let in_range: result::Result<u16, ArgumentError> =
+            assert_within_range_inclusive(10, &range);
 
-        if let Ok(y) = result {
+        if let Ok(y) = in_range {
             assert_eq!(y, 10);
         } else {
-            panic!("{}", &format!("Expected Ok(10) but got {:?}", result));
+            panic!("{}", &format!("Expected Ok(10) but got {:?}", in_range));
         }
     }
 }
