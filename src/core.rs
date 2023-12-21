@@ -5,8 +5,10 @@ use thiserror::Error;
 
 #[derive(Debug, Error)]
 pub enum CoreError {
-    #[error("IO Error")]
+    #[error("IO Error: {0}")]
     Io(#[from] io::Error),
+    #[error("Bad number: {0}")]
+    BadNumber(#[from] ParseIntError),
 }
 
 pub trait Solver {
