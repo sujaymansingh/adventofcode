@@ -14,6 +14,14 @@ pub enum CoreError {
     BadNumber(#[from] ParseIntError),
     #[error("Couldn't scan string: {0:?}")]
     StringScanner(#[from] StringScannerError),
+    #[error("General Error: {0}")]
+    General(String),
+}
+
+impl CoreError {
+    pub fn general(reason: &str) -> Self {
+        Self::General(reason.to_string())
+    }
 }
 
 pub type Result<T> = result::Result<T, CoreError>;
